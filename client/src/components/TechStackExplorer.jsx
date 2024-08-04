@@ -14,54 +14,54 @@ function TechStackExplorer({ recommendation }) {
     </ul>
   );
 
-  const renderLearningResources = (tech) => (
-    <div className="mt-4">
-      <h4 className="text-lg font-semibold text-gray-800">{tech} Resources:</h4>
-      <div className="ml-4">
-        <p className="font-medium text-gray-700">YouTube Tutorials:</p>
-        <ul className="list-disc list-inside">
-          {recommendation.learningResources[tech].youtubeLinks.map(
-            (link, index) => (
-              <li key={index}>
-                <a
-                  href={link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >{`Tutorial ${index + 1}`}</a>
-              </li>
-            )
-          )}
-        </ul>
-        <p className="font-medium text-gray-700 mt-2">GitHub Repositories:</p>
-        <ul className="list-disc list-inside">
-          {recommendation.learningResources[tech].githubRepos.map(
-            (repo, index) => (
-              <li key={index}>
-                <a
-                  href={repo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >{`Repository ${index + 1}`}</a>
-              </li>
-            )
-          )}
-        </ul>
-        <p className="font-medium text-gray-700 mt-2">
-          Official Documentation:
-        </p>
-        <a
-          href={recommendation.learningResources[tech].officialDocs}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:underline"
-        >
-          View Documentation
-        </a>
-      </div>
-    </div>
-  );
+  // const renderLearningResources = (tech) => (
+  //   <div className="mt-4">
+  //     <h4 className="text-lg font-semibold text-gray-800">{tech} Resources:</h4>
+  //     <div className="ml-4">
+  //       <p className="font-medium text-gray-700">YouTube Tutorials:</p>
+  //       <ul className="list-disc list-inside">
+  //         {recommendation.learningResources[tech].youtubeLinks.map(
+  //           (link, index) => (
+  //             <li key={index}>
+  //               <a
+  //                 href={link}
+  //                 target="_blank"
+  //                 rel="noopener noreferrer"
+  //                 className="text-blue-600 hover:underline"
+  //               >{`Tutorial ${index + 1}`}</a>
+  //             </li>
+  //           )
+  //         )}
+  //       </ul>
+  //       <p className="font-medium text-gray-700 mt-2">GitHub Repositories:</p>
+  //       <ul className="list-disc list-inside">
+  //         {recommendation.learningResources[tech].githubRepos.map(
+  //           (repo, index) => (
+  //             <li key={index}>
+  //               <a
+  //                 href={repo}
+  //                 target="_blank"
+  //                 rel="noopener noreferrer"
+  //                 className="text-blue-600 hover:underline"
+  //               >{`Repository ${index + 1}`}</a>
+  //             </li>
+  //           )
+  //         )}
+  //       </ul>
+  //       <p className="font-medium text-gray-700 mt-2">
+  //         Official Documentation:
+  //       </p>
+  //       <a
+  //         href={recommendation.learningResources[tech].officialDocs}
+  //         target="_blank"
+  //         rel="noopener noreferrer"
+  //         className="text-blue-600 hover:underline"
+  //       >
+  //         View Documentation
+  //       </a>
+  //     </div>
+  //   </div>
+  // );
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow mt-8">
@@ -77,7 +77,7 @@ function TechStackExplorer({ recommendation }) {
       </h3>
       {renderTechList(recommendation.recommendedStack.technologies)}
 
-      <div className="mt-8">
+      {/* <div className="mt-8">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">
           Learning Resources
         </h3>
@@ -97,7 +97,7 @@ function TechStackExplorer({ recommendation }) {
             {expandedResource === tech && renderLearningResources(tech)}
           </div>
         ))}
-      </div>
+      </div> */}
 
       <div className="mt-8">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">
