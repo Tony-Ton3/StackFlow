@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export async function getClaudeRecommendation(projectDetails) {
-  const API_URL = "http://localhost:3002/api/claude-recommendation";
+  const endpoint = "http://localhost:3002/api/claude-recommendation";
 
   try {
-    const response = await axios.post(API_URL, projectDetails);
+    const response = await axios.post(endpoint, projectDetails);
 
     if (response.data && typeof response.data === "object") {
       return response.data;

@@ -1,20 +1,14 @@
 import express from "express";
-import cors from "cors";
 import Anthropic from "@anthropic-ai/sdk";
-import dotenv from "dotenv";
-import { generatePrompt } from "./utils/claudePrompt.js";
+import { generatePrompt } from "../utils/claudePrompt.js";
 
-dotenv.config();
-
-const app = express();
-app.use(cors());
-app.use(express.json());
+const router = express.Router();
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-app.post("/api/claude-recommendation", async (req, res) => {
+router.post("/claude-recommendation", async (req, res) => {
   try {
     const prompt = generatePrompt(req.body);
 
@@ -70,7 +64,4 @@ app.post("/api/claude-recommendation", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+export const recommendationRouter = router;

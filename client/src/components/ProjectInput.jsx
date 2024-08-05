@@ -14,6 +14,7 @@ function ProjectInput({ onStackRecommended }) {
 
   const handleInputChange = (id, value) => {
     setResponses((prev) => ({ ...prev, [id]: value }));
+    console.log(responses);
   };
 
   const handleMultiSelectChange = (id, value, isChecked) => {
@@ -23,12 +24,14 @@ function ProjectInput({ onStackRecommended }) {
         ? [...prev[id], value]
         : prev[id].filter((item) => item !== value),
     }));
+    console.log(responses);
   };
 
   const handleNext = () => {
     if (currentPage < projectQuestions.length - 1) {
       setCurrentPage((prev) => prev + 1);
     } else {
+      //sends userinput to server to get recommendations
       handleRecommendation();
     }
   };
@@ -119,6 +122,7 @@ function ProjectInput({ onStackRecommended }) {
       />
 
       {currentPageQuestions.questions.map((question) => (
+        // key for optimization
         <div key={question.id} className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             {question.question}
@@ -127,10 +131,14 @@ function ProjectInput({ onStackRecommended }) {
         </div>
       ))}
       {error && <p className="text-red-500 mb-4">{error}</p>}
-      <div className="flex justify-between mt-6">
+      <div
+        className={`flex ${
+          !currentPage ? "justify-end" : "justify-between"
+        } mt-6`}
+      >
         <button
           onClick={handlePrevious}
-          disabled={currentPage === 0}
+          hidden={currentPage === 0}
           className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Previous
