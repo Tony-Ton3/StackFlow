@@ -6,14 +6,12 @@ export default function App() {
   //used to set user inputs, once set, TechStack Explorer is mounted
   const [recommendation, setRecommendation] = useState(null);
 
-  // console.log("Recommendation in App:", recommendation);
-
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       {recommendation ? (
         <TechStackExplorer recommendation={recommendation} />
       ) : (
-        <ProjectInput onStackRecommended={setRecommendation} />
+        <ProjectInput setRecommendation={setRecommendation} />
       )}
     </div>
   );

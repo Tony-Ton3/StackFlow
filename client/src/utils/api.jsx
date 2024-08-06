@@ -1,22 +1,35 @@
 import axios from "axios";
 
-export async function getClaudeRecommendation(projectDetails) {
-  const endpoint = "http://localhost:3002/api/claude-recommendation";
+const API_BASE_URL = "http://localhost:3002/api"; // Adjust this if your server is on a different port
 
+export const getClaudeRecommendation = async (responses) => {
   try {
-    const response = await axios.post(endpoint, projectDetails);
+    const response = await axios.post(
+      `${API_BASE_URL}/claude-recommendation`,
+      responses
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error getting Claude recommendation:", error);
+    throw error;
+  }
+};
 
-    if (response.data && typeof response.data === "object") {
+export const fetchTutorialsForTechnology = async (technology) => {
+  try {
+    console.log(`Fetching tutorials for ${technology}`);
+    const response = await axios.get(
+      `${API_BASE_URL}/youtube/tutorials/${encodeURIComponent(technology)}`
+    );
+    console.log("API Response:", response);
+    if (response.data && Array.isArray(response.data)) {
       return response.data;
     } else {
       console.error("Unexpected response format:", response.data);
-      throw new Error("Unexpected response format from server");
+      return [];
     }
   } catch (error) {
-    console.error(
-      "Error getting Claude recommendation:",
-      error.response ? error.response.data : error.message
-    );
-    throw error;
+    console.error("Error fetching tutorials:", error);
+    return [];
   }
-}
+};

@@ -1,14 +1,13 @@
-import express from "express";
 import Anthropic from "@anthropic-ai/sdk";
 import { generatePrompt } from "../utils/claudePrompt.js";
-
-const router = express.Router();
+import dotenv from "dotenv";
+dotenv.config();
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-router.post("/claude-recommendation", async (req, res) => {
+export const getClaudeRecommendation = async (req, res) => {
   try {
     const prompt = generatePrompt(req.body);
 
@@ -62,6 +61,4 @@ router.post("/claude-recommendation", async (req, res) => {
       details: error.message,
     });
   }
-});
-
-export const recommendationRouter = router;
+};

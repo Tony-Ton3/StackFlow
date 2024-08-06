@@ -3,7 +3,7 @@ import ProgressBar from "./ProgressBar";
 import { getClaudeRecommendation } from "../utils/api";
 import { projectQuestions } from "../constants/questions";
 
-function ProjectInput({ onStackRecommended }) {
+function ProjectInput({ setRecommendation }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [responses, setResponses] = useState({
     features: [],
@@ -14,7 +14,6 @@ function ProjectInput({ onStackRecommended }) {
 
   const handleInputChange = (id, value) => {
     setResponses((prev) => ({ ...prev, [id]: value }));
-    console.log(responses);
   };
 
   const handleMultiSelectChange = (id, value, isChecked) => {
@@ -24,7 +23,6 @@ function ProjectInput({ onStackRecommended }) {
         ? [...prev[id], value]
         : prev[id].filter((item) => item !== value),
     }));
-    console.log(responses);
   };
 
   const handleNext = () => {
@@ -47,7 +45,8 @@ function ProjectInput({ onStackRecommended }) {
       setIsLoading(true);
       setError(null);
       const recommendationObject = await getClaudeRecommendation(responses);
-      onStackRecommended(recommendationObject);
+      //once recommendation is set, App.jsx will mount the TechStakExplorer
+      setRecommendation(recommendationObject);
     } catch (error) {
       console.error("Error getting recommendation:", error);
       setError("Failed to get recommendation. Please try again.");
