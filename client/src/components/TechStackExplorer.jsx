@@ -5,6 +5,7 @@ import {
 } from "../utils/api";
 import { TechIcons } from "../assets/index";
 
+//assignes approprate icon to the technology
 function TechIcon({ name }) {
   console.log(name);
   const icon = TechIcons[name];
@@ -18,18 +19,29 @@ function TechStackExplorer({ recommendation }) {
   const [expandedTech, setExpandedTech] = useState(null);
   const [tutorials, setTutorials] = useState({});
   const [stack, setStack] = useState({});
+  const [isStackTutorialsLoading, setIsStackTutorialsLoading] = useState(true);
 
+  //fetches tutorials for the entire stack
   useEffect(() => {
     const fetchStackTutorials = async () => {
-      const stackTutorial = await fetchTutorialsForStack(
-        recommendation.recommendedStack
-      );
-      setStack(stackTutorial);
+      setIsStackTutorialsLoading(true);
+
+      try {
+        const stackTutorial = await fetchTutorialsForStack(
+          recommendation.recommendedStack.technologies
+        );
+        setStack(stackTutorial);
+      } catch (error) {
+        console.error("Error fetching stack tutorials:", error);
+      } finally {
+        setIsStackTutorialsLoading(false);
+      }
     };
 
     fetchStackTutorials();
   }, [recommendation]);
 
+  //fetch tutorials for a paticular layer of the stack is clicked
   const handleExpandTech = async (tech) => {
     if (expandedTech === tech) {
       setExpandedTech(null);
@@ -92,6 +104,42 @@ function TechStackExplorer({ recommendation }) {
       <p className="text-gray-600 mb-4">
         {recommendation.recommendedStack.reasoning}
       </p>
+
+      {/* New section for stack tutorials */}
+      <div className="mt-8">
+        <h3 className="text-2xl font-bold text-gray-800 mb-4">
+          Tutorials for the Entire Stack
+        </h3>
+        {isStackTutorialsLoading ? (
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+          </div>
+        ) : stack.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+            {stack.map((tutorial) => (
+              <div key={tutorial.id} className="border rounded-lg p-4">
+                <img
+                  src={tutorial.thumbnail}
+                  alt={tutorial.title}
+                  className="w-full"
+                />
+                <h4 className="mt-2 font-medium">{tutorial.title}</h4>
+                <p className="text-sm text-gray-600">{tutorial.channelTitle}</p>
+                <a
+                  href={`https://www.youtube.com/watch?v=${tutorial.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-block bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Watch
+                </a>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No tutorials found for the entire stack.</p>
+        )}
+      </div>
 
       <h3 className="text-xl font-semibold mt-6 mb-2 text-gray-800">
         Technologies:
