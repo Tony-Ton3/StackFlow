@@ -29,7 +29,24 @@ export const fetchTutorialsForTechnology = async (technology) => {
       return [];
     }
   } catch (error) {
-    console.error("Error fetching tutorials:", error);
+    console.error("Error fetching tech tutorials:", error);
+    return [];
+  }
+};
+
+export const fetchTutorialsForStack = async (stack) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/youtube/tutorials/${encodedURIComponent(stack)}`
+    );
+    if (response.data && Array.isArray(response.data)) {
+      return response.data;
+    } else {
+      console.error("Unexpected response format: ", response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching stack tutorials", error);
     return [];
   }
 };

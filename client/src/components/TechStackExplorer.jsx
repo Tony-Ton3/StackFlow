@@ -1,10 +1,34 @@
-import React, { useState } from "react";
-import { fetchTutorialsForTechnology } from "../utils/api";
+import { useState, useEffect } from "react";
+import {
+  fetchTutorialsForTechnology,
+  fetchTutorialsForStack,
+} from "../utils/api";
+import { TechIcons } from "../assets/index";
+
+function TechIcon({ name }) {
+  console.log(name);
+  const icon = TechIcons[name];
+  if (!icon) return null;
+
+  return <img src={icon.src} alt={icon.alt} className="w-6 h-6 mr-5" />;
+}
 
 function TechStackExplorer({ recommendation }) {
   const [showAlternative, setShowAlternative] = useState(false);
   const [expandedTech, setExpandedTech] = useState(null);
   const [tutorials, setTutorials] = useState({});
+  const [stack, setStack] = useState({});
+
+  useEffect(() => {
+    const fetchStackTutorials = async () => {
+      const stackTutorial = await fetchTutorialsForStack(
+        recommendation.recommendedStack
+      );
+      setStack(stackTutorial);
+    };
+
+    fetchStackTutorials();
+  }, [recommendation]);
 
   const handleExpandTech = async (tech) => {
     if (expandedTech === tech) {
@@ -74,26 +98,29 @@ function TechStackExplorer({ recommendation }) {
       </h3>
 
       {/* renders tech stack here */}
-      {recommendation.recommendedStack.technologies.map((tech) => (
-        <div key={tech} className="mb-4">
-          <button
-            onClick={() => handleExpandTech(tech)}
-            className="w-full text-left px-4 py-2 bg-blue-100 hover:bg-blue-200 rounded transition duration-300"
-          >
-            <span className="font-semibold">{tech}</span>
-            <span className="float-right">
-              {expandedTech === tech ? "▲" : "▼"}
-            </span>
-          </button>
+      {recommendation.recommendedStack.technologies.map((tech) => {
+        return (
+          <div key={tech} className="mb-4">
+            <button
+              onClick={() => handleExpandTech(tech)}
+              className="w-full text-left px-4 py-2 bg-blue-100 hover:bg-blue-200 rounded transition duration-300 flex items-center"
+            >
+              <TechIcon name={tech} />
+              <span className="font-semibold">{tech}</span>
+              <span className="ml-auto">
+                {expandedTech === tech ? "▲" : "▼"}
+              </span>
+            </button>
 
-          {expandedTech === tech && (
-            <TechnologyTutorials
-              technology={tech}
-              tutorials={tutorials[tech] || []}
-            />
-          )}
-        </div>
-      ))}
+            {expandedTech === tech && (
+              <TechnologyTutorials
+                technology={tech}
+                tutorials={tutorials[tech] || []}
+              />
+            )}
+          </div>
+        );
+      })}
 
       <div className="mt-8">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">
