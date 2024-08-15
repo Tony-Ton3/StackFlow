@@ -22,15 +22,13 @@ export default function App() {
     <Routes>
       <Route path="sign-in" element={<SignIn />} />
       <Route path="sign-up" element={<SignUp />} />
-
-      {/* these pages are only accessible once a user has successfully signed up */}
       {currentUser && (
         <Route element={<PrivateRoute />}>
           <Route path="techstackexplorer" element={<TechStackExplorer />} />
           <Route path="projectinput" element={<ProjectInput />} />
         </Route>
       )}
-      <Route path="*" element={<TechStackExplorer />} />
+      <Route path="*" element={<SignIn />} />
     </Routes>
   );
 }

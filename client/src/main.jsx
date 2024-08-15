@@ -7,6 +7,10 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter } from "react-router-dom";
 
+// persistor.purge().then(() => {
+//   console.log("Purged persisted state");
+// });
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <PersistGate persistor={persistor}>

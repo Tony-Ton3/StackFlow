@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import routes from "./routes/api.js";
 import authRoutes from "./routes/auth.route.js";
+import userRoutes from "./routes/user.route.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
@@ -29,6 +30,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api", routes);
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 const PORT = process.env.PORT || 3002;
 

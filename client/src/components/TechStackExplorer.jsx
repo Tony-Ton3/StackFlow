@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   fetchTutorialsForTechnology,
   fetchTutorialsForStack,
@@ -14,12 +15,13 @@ function TechIcon({ name }) {
   return <img src={icon.src} alt={icon.alt} className="w-6 h-6 mr-5" />;
 }
 
-function TechStackExplorer({ recommendation }) {
+function TechStackExplorer() {
   const [showAlternative, setShowAlternative] = useState(false);
   const [expandedTech, setExpandedTech] = useState(null);
   const [tutorials, setTutorials] = useState({});
   const [stack, setStack] = useState({});
   const [isStackTutorialsLoading, setIsStackTutorialsLoading] = useState(true);
+  const { currentStack } = useSelector((state) => state.stack);
 
   //fetches tutorials for the entire stack
   useEffect(() => {
@@ -28,7 +30,7 @@ function TechStackExplorer({ recommendation }) {
 
       try {
         const stackTutorial = await fetchTutorialsForStack(
-          recommendation.recommendedStack.technologies
+          currentStack.recommendedStack.technologies
         );
         setStack(stackTutorial);
       } catch (error) {
@@ -39,7 +41,7 @@ function TechStackExplorer({ recommendation }) {
     };
 
     fetchStackTutorials();
-  }, [recommendation]);
+  }, [currentStack]);
 
   //fetch tutorials for a paticular layer of the stack is clicked
   const handleExpandTech = async (tech) => {
@@ -99,10 +101,10 @@ function TechStackExplorer({ recommendation }) {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow mt-8">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">
-        Recommended Tech Stack: {recommendation.recommendedStack.name}
+        Recommended Tech Stack: {currentStack.recommendedStack.name}
       </h2>
       <p className="text-gray-600 mb-4">
-        {recommendation.recommendedStack.reasoning}
+        {currentStack.recommendedStack.reasoning}
       </p>
 
       {/* New section for stack tutorials */}
@@ -146,7 +148,7 @@ function TechStackExplorer({ recommendation }) {
       </h3>
 
       {/* renders tech stack here */}
-      {recommendation.recommendedStack.technologies.map((tech) => {
+      {currentStack.recommendedStack.technologies.map((tech) => {
         return (
           <div key={tech} className="mb-4">
             <button
@@ -175,7 +177,7 @@ function TechStackExplorer({ recommendation }) {
           Getting Started
         </h3>
         <p className="text-gray-700 whitespace-pre-line">
-          {recommendation.gettingStarted}
+          {currentStack.gettingStarted}
         </p>
       </div>
 
@@ -183,7 +185,7 @@ function TechStackExplorer({ recommendation }) {
         <h3 className="text-2xl font-bold text-gray-800 mb-4">
           Additional Advice
         </h3>
-        <p className="text-gray-700">{recommendation.additionalAdvice}</p>
+        <p className="text-gray-700">{currentStack.additionalAdvice}</p>
       </div>
 
       <div className="mt-8">
@@ -201,22 +203,20 @@ function TechStackExplorer({ recommendation }) {
         {showAlternative && (
           <div className="mt-4 p-4 bg-gray-100 rounded-lg">
             <h4 className="text-xl font-semibold mb-2 text-gray-800">
-              {recommendation.alternativeStack.name}
+              {currentStack.alternativeStack.name}
             </h4>
             <p className="text-gray-600 mb-4">
-              {recommendation.alternativeStack.reasoning}
+              {currentStack.alternativeStack.reasoning}
             </p>
             <h5 className="text-lg font-semibold mt-2 mb-1 text-gray-800">
               Technologies:
             </h5>
             <ul className="list-disc list-inside text-sm mt-2">
-              {recommendation.alternativeStack.technologies.map(
-                (tech, index) => (
-                  <li key={index} className="text-gray-700">
-                    {tech}
-                  </li>
-                )
-              )}
+              {currentStack.alternativeStack.technologies.map((tech, index) => (
+                <li key={index} className="text-gray-700">
+                  {tech}
+                </li>
+              ))}
             </ul>
           </div>
         )}
