@@ -10,6 +10,10 @@ const techstackSlice = createSlice({
   name: "stack",
   initialState,
   reducers: {
+    setStackStart: (state) => {
+      state.loading = false;
+      state.error = null;
+    },
     setStackSuccess: (state, action) => {
       state.currentStack = action.payload;
       state.loading = false;

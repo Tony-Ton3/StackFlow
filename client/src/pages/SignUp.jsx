@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signInSuccess, signInFailure } from "../redux/userSlice";
+import { signInStart, signInSuccess, signInFailure } from "../redux/userSlice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function SignUp() {
@@ -10,8 +10,7 @@ export default function SignUp() {
     email: "",
     password: "",
   });
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -41,13 +40,11 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.password) {
-      return setErrorMessage("Please fill out all fields.");
+      return dispatch(signInFailure("Fill out all fields"));
     }
 
     try {
-      setLoading(true);
-      setErrorMessage(null);
-
+      dispatch(signInStart());
       const responseSignup = await fetch(
         "http://localhost:3002/api/auth/signup",
         {
@@ -60,7 +57,7 @@ export default function SignUp() {
 
       const dataSignup = await responseSignup.json();
       if (dataSignup.success === false) {
-        return setErrorMessage(dataSignup.message);
+        return dispatch(signInFailure(dataSignup.message));
       }
 
       const responseSignin = await fetch(
@@ -84,7 +81,6 @@ export default function SignUp() {
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
-      setLoading(false);
     }
   };
 

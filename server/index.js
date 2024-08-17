@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ mongoose
   });
 
 const app = express();
+app.use(cookieParser());
 
 const corsOptions = {
   origin: "http://localhost:5173", // Your frontend URL

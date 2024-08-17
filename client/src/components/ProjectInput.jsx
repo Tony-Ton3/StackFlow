@@ -9,23 +9,21 @@ import Header from "./Header";
 
 function ProjectInput() {
   const [currentPage, setCurrentPage] = useState(0);
-  const [responses, setResponses] = useState({
-    features: [],
-    knownTechnologies: [],
-  });
+  const [form, setForm] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
 
   const handleInputChange = (id, value) => {
-    setResponses((prev) => ({ ...prev, [id]: value }));
+    setForm((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleMultiSelectChange = (id, value, isChecked) => {
-    setResponses((prev) => ({
+    setForm((prev) => ({
       ...prev,
       [id]: isChecked
-        ? [...prev[id], value]
+        ? [...(prev[id] || []), value] // Initialize with an empty array if undefined
         : prev[id].filter((item) => item !== value),
     }));
   };
@@ -48,8 +46,10 @@ function ProjectInput() {
   async function handleRecommendation() {
     try {
       setIsLoading(true);
-      const recommendationObject = await getClaudeRecommendation(responses);
-      // setRecommendation(recommendationObject);
+      const recommendationObject = await getClaudeRecommendation(
+        currentUser._id,
+        form
+      );
       dispatch(setStackSuccess(recommendationObject));
       navigate("/techstackexplorer");
     } catch (error) {
@@ -66,7 +66,7 @@ function ProjectInput() {
         return (
           <input
             type="text"
-            value={responses[question.id] || ""}
+            value={form[question.id] || ""}
             onChange={(e) => handleInputChange(question.id, e.target.value)}
             className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -74,7 +74,7 @@ function ProjectInput() {
       case "select":
         return (
           <select
-            value={responses[question.id] || ""}
+            value={form[question.id] || ""}
             onChange={(e) => handleInputChange(question.id, e.target.value)}
             className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
@@ -93,7 +93,7 @@ function ProjectInput() {
               <label key={option} className="inline-flex items-center mr-4">
                 <input
                   type="checkbox"
-                  checked={responses[question.id]?.includes(option)}
+                  checked={form[question.id]?.includes(option)}
                   onChange={(e) =>
                     handleMultiSelectChange(
                       question.id,
@@ -144,7 +144,7 @@ function ProjectInput() {
         >
           <button
             onClick={handlePrevious}
-            hidden={currentPage === 0}
+            hidden={currentPage === 0} //if on page 1
             className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Previous
@@ -156,8 +156,8 @@ function ProjectInput() {
           >
             {currentPage === projectQuestions.length - 1
               ? isLoading
-                ? "Getting Recommendation..."
-                : "Get Recommendation"
+                ? "Looking for the best stack..."
+                : "Find Stack"
               : "Next"}
           </button>
         </div>

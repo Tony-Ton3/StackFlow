@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { signInSuccess, signInFailure } from "../redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { signInStart, signInSuccess, signInFailure } from "../redux/userSlice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function SignIn() {
@@ -9,8 +9,7 @@ export default function SignIn() {
     email: "",
     password: "",
   });
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -27,13 +26,11 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return setErrorMessage("Please fill out all fields.");
+      return dispatch(signInFailure("Please fill all the fields"));
     }
 
     try {
-      setLoading(true);
-      setErrorMessage(null);
-
+      dispatch(signInStart());
       const responseSignin = await fetch(
         "http://localhost:3002/api/auth/signin",
         {
@@ -45,9 +42,8 @@ export default function SignIn() {
       );
 
       const dataSignin = await responseSignin.json();
-      console.log("datasignin: ", dataSignin);
       if (dataSignin.success === false) {
-        return setErrorMessage(dataSignin.message);
+        dispatch(signInFailure(dataSignin.message));
       }
 
       if (responseSignin.ok) {
@@ -56,7 +52,6 @@ export default function SignIn() {
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
-      setLoading(false);
     }
   };
 

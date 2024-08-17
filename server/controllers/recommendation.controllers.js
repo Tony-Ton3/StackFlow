@@ -1,13 +1,18 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { generatePrompt } from "../utils/claudePrompt.js";
+import Stack from "../models/stack.model.js";
 import dotenv from "dotenv";
+import { errorHandler } from "../utils/error.js";
 dotenv.config();
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-export const getClaudeRecommendation = async (req, res) => {
+export const getClaudeRecommendation = async (req, res, next) => {
+  // if (req.user.id !== req.params.userId) {
+  //   return next(errorHandler(403, "You are not allowed to update this user"));
+  // }
   try {
     const prompt = generatePrompt(req.body);
 
@@ -24,7 +29,6 @@ export const getClaudeRecommendation = async (req, res) => {
 
     // Extract the content from Claude's response
     const content = response.content[0].text;
-    console.log("Claude's full response:", content);
 
     // Try to find JSON in the response
     let parsedContent;
@@ -32,7 +36,7 @@ export const getClaudeRecommendation = async (req, res) => {
       // First, try to parse the entire response as JSON
       parsedContent = JSON.parse(content);
     } catch (error) {
-      // If that fails, try to extract JSON from the response
+      // If that fails, try to extract JSON from the response by looking for it using regex
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         try {
@@ -43,22 +47,17 @@ export const getClaudeRecommendation = async (req, res) => {
       }
     }
 
-    if (parsedContent) {
-      console.log("Structured recommendation:", parsedContent);
-      res.json(parsedContent);
-    } else {
-      console.error("No valid JSON found in Claude's response");
-      res.status(500).json({
-        error: "Invalid response format from Claude",
-        details: "No JSON data found in the response",
-        fullResponse: content,
-      });
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({
-      error: "Failed to get recommendation from Claude",
-      details: error.message,
+    const newStack = new Stack({
+      userId: req.user.id,
+      recommendedStack: parsedContent.recommendedStack,
+      alternativeStack: parsedContent.alternativeStack,
+      gettingStarted: parsedContent.gettingStarted,
+      additionalAdvice: parsedContent.additionalAdvice,
     });
+
+    await newStack.save();
+    res.json(newStack);
+  } catch (error) {
+    return next(errorHandler(500, "Failed to get recommendation from Claude"));
   }
 };
