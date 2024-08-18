@@ -68,50 +68,62 @@ function TechStackExplorer() {
     }
   };
 
-  const TechnologyTutorials = ({ technology, techTutorials }) => (
-    <div className="mt-4">
-      <h3 className="text-xl font-semibold">{technology} Tutorials</h3>
-      {Array.isArray(techTutorials) && techTutorials.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
-          {techTutorials.map((video) => (
-            <div key={video.id} className="border rounded-lg p-4">
-              <img src={video.thumbnail} alt={video.title} className="w-full" />
-              <h4 className="mt-2 font-medium">{video.title}</h4>
-              <p className="text-sm text-gray-600">{video.channelTitle}</p>
-              <a
-                href={`https://www.youtube.com/watch?v=${video.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-block bg-red-600 text-white px-4 py-2 rounded"
-              >
-                Watch
-              </a>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="flex items-center justify-center">
-          <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-900"></div>
-        </div>
-      )}
-    </div>
-  );
+  const TechnologyTutorials = ({ tech, techTutorials }) => {
+    console.log("Rendering TechnologyTutorials for:", tech);
+    console.log("Tech Tutorials:", techTutorials); // Debugging line
+
+    return (
+      <div className="mt-4">
+        {/* YouTube videos */}
+        <h3 className="text-xl font-semibold">{tech} YouTube Tutorials</h3>
+        {Array.isArray(techTutorials) && techTutorials.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+            {techTutorials.map((video) => (
+              <div key={video.id} className="border rounded-lg p-4">
+                <img
+                  src={video.thumbnail}
+                  alt={video.title}
+                  className="w-full"
+                />
+                <h4 className="mt-2 font-medium">{video.title}</h4>
+                <p className="text-sm text-gray-600">{video.channelTitle}</p>
+                <a
+                  href={`https://www.youtube.com/watch?v=${video.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-block bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Watch
+                </a>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-900"></div>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
-    <div>
+    <div className="bg-black">
       <Header />
       <div className="max-w-4xl mx-auto p-6 rounded-lg shadow mt-8 bg-gradient-to-br from-purple-600 via-pink-400 to-blue-300">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">
-          Recommended Tech Stack: {currentStack.recommendedStack.name}
+        <h2 className="flex justify-center text-3xl font-bold text-black mb-6 underline">
+          {currentStack.recommendedStack.name}
         </h2>
-        <p className="text-gray-600 mb-4">
-          {currentStack.recommendedStack.reasoning}
-        </p>
+        <div className="bg-white w-full p-5 rounded-2xl text-center font-bold border-4 border-black border-dashed ">
+          <p className="text-black mb-4">
+            {currentStack.recommendedStack.reasoning}
+          </p>
+        </div>
 
         {/* New section for stack tutorials */}
         <div className="mt-8">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">
-            Tutorials for the Entire Stack
+          <h3 className="flex justify-center text-lg font-bold text-black mb-4">
+            ---- Youtube tutorials for {currentStack.recommendedStack.name} ----
           </h3>
           {isStackTutorialsLoading ? (
             <div className="flex items-center justify-center">
@@ -151,23 +163,43 @@ function TechStackExplorer() {
         {/* renders tech stack here */}
         {currentStack.recommendedStack.technologies.map((tech) => {
           return (
-            <div key={tech} className="mb-4">
+            <div key={tech._id} className="mb-4">
               <button
-                onClick={() => handleExpandTech(tech)}
+                onClick={() => handleExpandTech(tech.name)}
                 className="w-full text-left px-4 py-2 bg-blue-100 hover:bg-blue-200 rounded transition duration-300 flex items-center"
               >
-                <TechIcon name={tech} />
-                <span className="font-semibold">{tech}</span>
+                <TechIcon name={tech.name} />
+                <span className="font-semibold">{tech.name}</span>
                 <span className="ml-auto">
                   {expandedTech === tech ? "▲" : "▼"}
                 </span>
               </button>
 
-              {expandedTech === tech && (
-                <TechnologyTutorials
-                  technology={tech}
-                  techTutorials={techTutorials[tech] || []}
-                />
+              {expandedTech === tech.name && (
+                <div className="mt-2 p-4 bg-gray-100 rounded">
+                  <p>
+                    <strong>Description:</strong> {tech.description}
+                  </p>
+                  <p>
+                    <strong>Documentation:</strong>{" "}
+                    <a
+                      href={tech.documentationUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline"
+                    >
+                      View Documentation
+                    </a>
+                  </p>
+                  <p>
+                    <strong>Prerequisites:</strong>{" "}
+                    {tech.prerequisites.join(", ")}
+                  </p>
+                  <TechnologyTutorials
+                    tech={tech.name}
+                    techTutorials={techTutorials[tech.name] || []}
+                  />
+                </div>
               )}
             </div>
           );
@@ -175,7 +207,7 @@ function TechStackExplorer() {
 
         <div className="mt-8">
           <h3 className="text-2xl font-bold text-gray-800 mb-4">
-            Getting Started
+            Tips on getting started
           </h3>
           <p className="text-gray-700 whitespace-pre-line">
             {currentStack.gettingStarted}

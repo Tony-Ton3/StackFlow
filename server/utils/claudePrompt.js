@@ -42,6 +42,7 @@ Based on your analysis, provide the following:
    - Any additional technologies or tools necessary for the project
 2. An alternative, possibly simpler tech stack
 3. Brief getting started guidance
+4. Additional advice or considerations 
 
 Present your recommendations and resources in a clear, organized manner. Use bullet points for readability.
 
@@ -51,12 +52,28 @@ Format your response as a JSON object with the following structure:
 {
   "recommendedStack": {
     "name": "Name of the recommended stack",
-    "technologies": ["Tech1", "Tech2", ...],
+    "technologies": [
+      {
+        "name": "Tech1",
+        "description": "Brief description of Tech1's purpose",
+        "documentationUrl": "Official documentation URL for Tech1",
+        "prerequisites": ["Prerequisite1", "Prerequisite2", ...]
+      },
+      //... more technologies
+    ],
     "reasoning": "Brief explanation for the recommendation"
   },
-  "alternativeStack": {
+   "alternativeStack": {
     "name": "Name of the alternative stack",
-    "technologies": ["AltTech1", "AltTech2", ...],
+    "technologies": [
+      {
+        "name": "AltTech1",
+        "description": "Brief description of AltTech1's purpose",
+        "documentationUrl": "Official documentation URL for AltTech1",
+        "prerequisites": ["Prerequisite1", "Prerequisite2"]
+      },
+      // ... more technologies
+    ],
     "reasoning": "Brief explanation for this alternative"
   },
   "gettingStarted": "Brief guidance on getting started with the recommended stack",

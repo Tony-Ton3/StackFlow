@@ -51,6 +51,7 @@ function ProjectInput() {
         form
       );
       dispatch(setStackSuccess(recommendationObject));
+      console.log("recommendation", recommendationObject);
       navigate("/techstackexplorer");
     } catch (error) {
       console.error("Error getting recommendation:", error);
@@ -116,7 +117,7 @@ function ProjectInput() {
   const currentPageQuestions = projectQuestions[currentPage];
 
   return (
-    <div>
+    <div className="bg-black">
       <Header />
       <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">

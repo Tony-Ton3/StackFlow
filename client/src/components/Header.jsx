@@ -25,7 +25,7 @@ export default function Header() {
     }
   };
   return (
-    <header className="bg-black text-white p-4">
+    <header className="bg-black text-white p-4 border-b-2 border-b-white">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex justify-center items-center space-x-2">
           <TbStack3Filled className="size-10" />
