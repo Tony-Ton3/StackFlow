@@ -19,7 +19,7 @@ function TechStackExplorer() {
   const [stackTutorials, setStackTutorials] = useState({});
   const [isStackTutorialsLoading, setIsStackTutorialsLoading] = useState(true);
   const [techTutorials, setTechTutorials] = useState({});
-  const [expandedTech, setExpandedTech] = useState(null);
+  const [expandedTech, setExpandedTech] = useState(null); //stores a name of a particular stack
   const [showAlternative, setShowAlternative] = useState(false);
 
   //recommended stack from projectinput
@@ -69,9 +69,6 @@ function TechStackExplorer() {
   };
 
   const TechnologyTutorials = ({ tech, techTutorials }) => {
-    console.log("Rendering TechnologyTutorials for:", tech);
-    console.log("Tech Tutorials:", techTutorials); // Debugging line
-
     return (
       <div className="mt-4">
         {/* YouTube videos */}
@@ -108,21 +105,19 @@ function TechStackExplorer() {
   };
 
   return (
-    <div className="bg-black">
+    <div className="h-full bg-gradient-to-b from-gray-900 to-black text-white">
       <Header />
-      <div className="max-w-4xl mx-auto p-6 rounded-lg shadow mt-8 bg-gradient-to-br from-purple-600 via-pink-400 to-blue-300">
-        <h2 className="flex justify-center text-3xl font-bold text-black mb-6 underline">
+      <div className="max-w-screen mx-40 my-20 p-10 rounded-2xl shadow bg-gradient-to-b from-gray-700 to-gray-900 text-white">
+        <h2 className="flex justify-center text-3xl font-bold mb-6 underline">
           {currentStack.recommendedStack.name}
         </h2>
-        <div className="bg-white w-full p-5 rounded-2xl text-center font-bold border-4 border-black border-dashed ">
-          <p className="text-black mb-4">
-            {currentStack.recommendedStack.reasoning}
-          </p>
+        <div className="bg-black w-full p-5 rounded-2xl text-center font-bold border-2 border-purple-400 border-dashed ">
+          <p className=" mb-4">{currentStack.recommendedStack.reasoning}</p>
         </div>
 
         {/* New section for stack tutorials */}
         <div className="mt-8">
-          <h3 className="flex justify-center text-lg font-bold text-black mb-4">
+          <h3 className="flex justify-center text-lg font-bold mb-4">
             ---- Youtube tutorials for {currentStack.recommendedStack.name} ----
           </h3>
           {isStackTutorialsLoading ? (
@@ -166,7 +161,7 @@ function TechStackExplorer() {
             <div key={tech._id} className="mb-4">
               <button
                 onClick={() => handleExpandTech(tech.name)}
-                className="w-full text-left px-4 py-2 bg-blue-100 hover:bg-blue-200 rounded transition duration-300 flex items-center"
+                className="w-1/4 text-black px-4 py-2 bg-blue-100 hover:bg-blue-200 rounded transition duration-300 flex items-center"
               >
                 <TechIcon name={tech.name} />
                 <span className="font-semibold">{tech.name}</span>
@@ -206,25 +201,17 @@ function TechStackExplorer() {
         })}
 
         <div className="mt-8">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">
-            Tips on getting started
-          </h3>
-          <p className="text-gray-700 whitespace-pre-line">
-            {currentStack.gettingStarted}
-          </p>
+          <h3 className="text-2xl font-bold mb-4">Tips on getting started</h3>
+          <p className="whitespace-pre-line">{currentStack.gettingStarted}</p>
         </div>
 
         <div className="mt-8">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">
-            Additional Advice
-          </h3>
-          <p className="text-gray-700">{currentStack.additionalAdvice}</p>
+          <h3 className="text-2xl font-bold mb-4">Additional Advice</h3>
+          <p>{currentStack.additionalAdvice}</p>
         </div>
 
         <div className="mt-8">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">
-            Alternative Stack
-          </h3>
+          <h3 className="text-2xl font-bold mb-4">Alternative Stack</h3>
           <button
             onClick={() => setShowAlternative(!showAlternative)}
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
