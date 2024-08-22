@@ -32,7 +32,6 @@ export default function Home() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex justify-center mb-12"
         >
-          if(!curretUser)
           <button
             onClick={() => navigate("/projectinput")}
             className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full text-xl transition duration-300 transform hover:scale-105"

@@ -25,7 +25,9 @@ export const getClaudeRecommendation = async (userId, form) => {
 export const fetchTutorialsForTechnology = async (technology) => {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/youtube/tutorials/${encodeURIComponent(technology)}`,
+      `http://localhost:3002/api/youtube/techtutorials/${encodeURIComponent(
+        technology
+      )}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -49,12 +51,12 @@ export const fetchTutorialsForTechnology = async (technology) => {
   }
 };
 
-export const fetchTutorialsForStack = async (stack) => {
+export const fetchTutorialsForStack = async (stackName) => {
   try {
-    const stackString = stack.join(","); // Join the array into a comma-separated string
-
     const response = await fetch(
-      `${API_BASE_URL}/youtube/tutorials/${encodeURIComponent(stackString)}`,
+      `http://localhost:3002/api/youtube/stacktutorials/${encodeURIComponent(
+        stackName
+      )}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -62,17 +64,21 @@ export const fetchTutorialsForStack = async (stack) => {
       }
     );
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(
+        `fetchTutorialsForStack server side failed: ${response.status}`
+      );
     }
+
     const data = await response.json();
+
     if (Array.isArray(data)) {
       return data;
     } else {
-      console.error("Unexpected response format: ", data);
+      console.error("response format is not an array: ", data);
       return [];
     }
   } catch (error) {
-    console.error("Error fetching stack tutorials", error);
+    console.error("Error fetching full stack tutorials", error);
     return [];
   }
 };

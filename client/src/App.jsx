@@ -22,7 +22,7 @@ export default function App() {
           <Route path="projectinput" element={<ProjectInput />} />
         </Route>
       )}
-      <Route path="*" element={<Home />} />
+      <Route path="*" element={<SignIn />} />
     </Routes>
   );
 }

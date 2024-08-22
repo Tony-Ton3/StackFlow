@@ -1,3 +1,6 @@
+import Stack from "../models/stack.model.js";
+import { errorHandler } from "../utils/error.js";
+
 export const signout = (req, res, next) => {
   try {
     res
@@ -7,5 +10,25 @@ export const signout = (req, res, next) => {
     console.log("user signed out");
   } catch (error) {
     next(error);
+  }
+};
+
+export const getstack = async (req, res, next) => {
+  try {
+    const stack = await Stack.findOne({ userId: req.user.id })
+      .sort({ createdAt: -1 }) // finds the last created stack
+      .limit(1) // Limit to 1 document
+      .exec();
+
+    // console.log("Fetched stack:", stack);
+
+    if (!stack) {
+      return res.status(404).json({ message: "Stack not found" });
+    }
+
+    res.status(200).json(stack);
+  } catch (error) {
+    console.error("Error fetching stack:", error);
+    next(errorHandler(500, "Error fetching stack"));
   }
 };

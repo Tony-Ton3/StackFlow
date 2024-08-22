@@ -9,9 +9,15 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
+//creates a recommended stack under the userId
 export const getClaudeRecommendation = async (req, res, next) => {
   if (req.user.id !== req.params.userId) {
-    return next(errorHandler(403, "You are not allowed to update this user"));
+    return next(
+      errorHandler(
+        403,
+        "You are not allowed to get recommendations for this user"
+      )
+    );
   }
   try {
     const prompt = generatePrompt(req.body);

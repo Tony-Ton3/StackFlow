@@ -13,7 +13,15 @@ router.post(
   verifyToken,
   getClaudeRecommendation
 );
-router.get("/youtube/tutorials/:technology", getTutorialsForTechnology);
-router.get("/youtube/tutorials/:stack", getTutorialsForStack);
+router.get(
+  "/youtube/techtutorials/:technology",
+  verifyToken,
+  getTutorialsForTechnology
+);
+router.get(
+  "/youtube/stacktutorials/:stackName",
+  verifyToken,
+  getTutorialsForStack
+);
 
 export default router;

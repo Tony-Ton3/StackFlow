@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { TbStack3Filled } from "react-icons/tb";
 import { signoutSuccess } from "../redux/userSlice";
 import { motion } from "framer-motion";
@@ -11,6 +11,8 @@ export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     const path = location.pathname.slice(1);
@@ -82,13 +84,21 @@ export default function Header() {
             />
           ))}
         </div>
-
-        <button
-          className="flex justify-center items-center w-20 h-10 font-bold bg-purple-400 rounded-lg"
-          onClick={() => handleSignout()}
-        >
-          <p>sign out</p>
-        </button>
+        {currentUser ? (
+          <button
+            className="flex justify-center items-center w-20 h-10 font-bold bg-purple-400 rounded-lg"
+            onClick={() => handleSignout()}
+          >
+            <p>Sign Out</p>
+          </button>
+        ) : (
+          <button
+            className="flex justify-center items-center w-20 h-10 font-bold bg-purple-400 rounded-lg"
+            onClick={() => navigate("/sign-in")}
+          >
+            <p>Sign In</p>
+          </button>
+        )}
       </div>
     </header>
   );
