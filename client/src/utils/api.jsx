@@ -51,12 +51,12 @@ export const fetchTutorialsForTechnology = async (technology) => {
   }
 };
 
-export const fetchTutorialsForStack = async (stackName) => {
+export const fetchTutorialsForStack = async (stackName, stackId) => {
   try {
     const response = await fetch(
       `http://localhost:3002/api/youtube/stacktutorials/${encodeURIComponent(
         stackName
-      )}`,
+      )}/${encodeURIComponent(stackId)}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },

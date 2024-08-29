@@ -32,3 +32,26 @@ export const getstack = async (req, res, next) => {
     next(errorHandler(500, "Error fetching stack"));
   }
 };
+
+export const getallsavedstacks = async (req, res, next) => {
+  try {
+    // Ensure user is authenticated
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const savedStacks = await Stack.find({ userId: req.user.id }).sort({
+      createdAt: -1,
+    });
+
+    if (!savedStacks || savedStacks.length === 0) {
+      return res.status(404).json({ message: "No saved stacks found" });
+    }
+
+    console.log("Saved stacks returned: ", savedStacks);
+    res.status(200).json(savedStacks);
+  } catch (error) {
+    console.error("Error fetching stacks:", error);
+    next(errorHandler(500, "Error fetching stacks"));
+  }
+};

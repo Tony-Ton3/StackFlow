@@ -6,12 +6,11 @@ import { FaRocket, FaLightbulb, FaBook } from "react-icons/fa";
 
 export default function Home() {
   const navigate = useNavigate();
-  const { currentUser } = useSelector((state) => state.user);
+  // const { currentUser } = useSelector((state) => state.user);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
-      <Header />
-      <main className="container mx-auto px-4 py-20">
+    <div className="h-screen bg-gradient-to-b from-gray-900 to-black text-white">
+      <main className="container mx-auto px-4 pt-28">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

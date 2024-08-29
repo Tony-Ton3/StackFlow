@@ -6,7 +6,7 @@ import { signoutSuccess } from "../redux/userSlice";
 import { motion } from "framer-motion";
 
 export default function Header() {
-  const tabs = ["Home", "Stack", "Saved"];
+  const tabs = ["Home", "Find", "Created Stacks"];
   const [selected, setSelected] = useState(tabs[0]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,8 +17,9 @@ export default function Header() {
   useEffect(() => {
     const path = location.pathname.slice(1);
     if (path === "") setSelected("Home");
-    else if (path === "techstackexplorer") setSelected("Stack");
-    else if (path === "saved") setSelected("Saved");
+    else if (path === "projectinput") setSelected("Find");
+    // else if (path === "techstackexplorer") setSelected("Stack");
+    else if (path === "created") setSelected("Created Stacks");
   }, [location]);
 
   const handleSignout = async () => {
@@ -45,8 +46,9 @@ export default function Header() {
         onClick={() => {
           setSelected(text);
           if (text === "Home") navigate("/home");
-          else if (text === "Stack") navigate("/techstackexplorer");
-          else if (text === "Saved") navigate("/saved");
+          else if (text === "Find") navigate("/projectinput");
+          // else if (text === "Stack") navigate("/techstackexplorer");
+          else if (text === "Created Stacks") navigate("/createdstacks");
         }}
         className={`${
           selected
@@ -67,8 +69,8 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-black text-white p-4 border-b-2 border-b-white">
-      <div className=" flex justify-between items-center">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black text-white p-4 border-b-2 border-b-white">
+      <div className="flex justify-between items-center">
         <div className="flex justify-center items-center space-x-2">
           <TbStack3Filled className="size-10" />
           <h1 className="text-2xl font-bold">Tech Stack Finder</h1>

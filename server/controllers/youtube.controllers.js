@@ -51,13 +51,13 @@ export const getTutorialsForTechnology = async (req, res) => {
 };
 
 export const getTutorialsForStack = async (req, res) => {
-  const { stackName } = req.params;
+  const { stackName, stackId } = req.params;
   const maxResults = 3;
 
   try {
-    // First, try to find existing tutorials in the database
+    //if stack totorial already exist for the particular stack return it
     let userTutorials = await UserTutorials.findOne({
-      userId: req.user.id,
+      stackId: stackId,
     });
 
     if (userTutorials) {
@@ -72,11 +72,13 @@ export const getTutorialsForStack = async (req, res) => {
     const url = new URL("https://www.googleapis.com/youtube/v3/search");
     url.search = new URLSearchParams({
       part: "snippet",
-      q: `${stackName} tutorial project`,
+      q: `${stackName} tutorial`,
       type: "video",
       maxResults: maxResults.toString(),
       key: process.env.YOUTUBE_API_KEY,
       relevanceLanguage: "en",
+      videoDuration: "medium", // medium-length videos
+      order: "relevance", // Sort by relevance
     }).toString();
 
     const response = await fetch(url, {
@@ -121,6 +123,7 @@ export const getTutorialsForStack = async (req, res) => {
     // Create new UserTutorials document
     userTutorials = new UserTutorials({
       userId: req.user.id,
+      stackId: stackId,
       stackTutorials: tutorials,
     });
 

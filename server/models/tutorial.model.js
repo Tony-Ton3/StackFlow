@@ -17,12 +17,18 @@ const UserTutorialsSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      unique: true,
+    },
+    stackId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Stack",
+      required: true,
     },
     stackTutorials: [VideoSchema],
   },
   { timestamps: true }
 );
+
+UserTutorialsSchema.index({ userId: 1, stackId: 1 }, { unique: true });
 
 const UserTutorials = mongoose.model("UserTutorials", UserTutorialsSchema);
 

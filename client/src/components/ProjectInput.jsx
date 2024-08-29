@@ -1,33 +1,77 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setStackSuccess, setStackFailure } from "../redux/techstackSlice";
 import ProgressBar from "./ProgressBar";
 import { getClaudeRecommendation } from "../utils/api";
 import { projectQuestions } from "../constants/questions";
-import Header from "./Header";
+import TechStackExplorer from "./TechStackExplorer";
 
 function ProjectInput() {
+  const [form, setForm] = useState(() => {
+    const savedForm = localStorage.getItem("projectForm");
+    return savedForm
+      ? JSON.parse(savedForm)
+      : {
+          description: "", //an descrioption of what the user wants to build
+          projectType: "", //web, mobile, etc
+          scale: "", //personal, startup, enterprise
+          features: [], //an array of must have features for the project
+          timeline: "", //development timeline
+          experience: "", //expereince level of the user
+          knownTechnologies: [], //getting more info about user experinece for more catered recommendation
+        };
+  });
+
+  const resetForm = () => {
+    //resets projectForm localStorage after submission
+    const emptyForm = {
+      description: "",
+      projectType: "",
+      scale: "",
+      features: [],
+      timeline: "",
+      experience: "",
+      knownTechnologies: [],
+    };
+    setForm(emptyForm);
+    localStorage.removeItem("projectForm");
+  };
   const [currentPage, setCurrentPage] = useState(0);
-  const [form, setForm] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [showTechStack, setShowTechStack] = useState(false);
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
+  const { currentStack, loading } = useSelector((state) => state.stack);
 
+  useEffect(() => {
+    localStorage.setItem("projectForm", JSON.stringify(form));
+  }, [form]);
+
+  //handles text box changes
   const handleInputChange = (id, value) => {
-    setForm((prev) => ({ ...prev, [id]: value }));
+    setForm((prev) => {
+      const newForm = { ...prev, [id]: value };
+      localStorage.setItem("projectForm", JSON.stringify(newForm));
+      return newForm;
+    });
   };
 
+  //handles check box changes
   const handleMultiSelectChange = (id, value, isChecked) => {
-    setForm((prev) => ({
-      ...prev,
-      [id]: isChecked
-        ? [...(prev[id] || []), value] // Initialize with an empty array if undefined
-        : prev[id].filter((item) => item !== value),
-    }));
+    setForm((prev) => {
+      const newForm = {
+        ...prev,
+        [id]: isChecked
+          ? [...(prev[id] || []), value]
+          : prev[id].filter((item) => item !== value),
+      };
+      localStorage.setItem("projectForm", JSON.stringify(newForm));
+      return newForm;
+    });
   };
 
+  //navigates to the next page of the form
   const handleNext = () => {
     if (currentPage < projectQuestions.length - 1) {
       setCurrentPage((prev) => prev + 1);
@@ -37,6 +81,7 @@ function ProjectInput() {
     }
   };
 
+  //navigate to the previosu page of the form
   const handlePrevious = () => {
     if (currentPage > 0) {
       setCurrentPage((prev) => prev - 1);
@@ -50,15 +95,19 @@ function ProjectInput() {
         currentUser._id,
         form
       );
+      resetForm(); //clears local storage
       dispatch(setStackSuccess(recommendationObject));
-      console.log("recommendation", recommendationObject);
-      navigate("/techstackexplorer");
+      setShowTechStack(true); // Set this to true after getting the recommendation
     } catch (error) {
       console.error("Error getting recommendation:", error);
       dispatch(setStackFailure(error));
     } finally {
       setIsLoading(false);
     }
+  }
+
+  if (showTechStack && currentStack) {
+    return <TechStackExplorer currentStack={currentStack} />;
   }
 
   const renderQuestion = (question) => {
@@ -117,54 +166,56 @@ function ProjectInput() {
   const currentPageQuestions = projectQuestions[currentPage];
 
   return (
-    <div className="bg-black">
-      <Header />
-      <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          {currentPageQuestions.title}
-        </h2>
-        <ProgressBar
-          currentStep={currentPage}
-          totalSteps={projectQuestions.length}
-        />
+    <div className="bg-black min-h-screen flex flex-col justify-center items-center">
+      <div className="w-full max-w-4xl mx-auto p-6">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+            {currentPageQuestions.title}
+          </h2>
+          <ProgressBar
+            currentStep={currentPage}
+            totalSteps={projectQuestions.length}
+          />
 
-        {currentPageQuestions.questions.map((question) => (
-          // key for optimization
-          <div key={question.id} className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              {question.question}
-            </label>
-            {renderQuestion(question)}
+          <div className="mt-8 space-y-6">
+            {currentPageQuestions.questions.map((question) => (
+              <div key={question.id}>
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  {question.question}
+                </label>
+                {renderQuestion(question)}
+              </div>
+            ))}
           </div>
-        ))}
-        {/* {error && <p className="text-red-500 mb-4">{error}</p>} */}
-        <div
-          className={`flex ${
-            !currentPage ? "justify-end" : "justify-between"
-          } mt-6`}
-        >
-          <button
-            onClick={handlePrevious}
-            hidden={currentPage === 0} //if on page 1
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+
+          <div
+            className={`flex ${
+              !currentPage ? "justify-end" : "justify-between"
+            } mt-8`}
           >
-            Previous
-          </button>
-          <button
-            onClick={handleNext}
-            disabled={isLoading}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            {currentPage === projectQuestions.length - 1
-              ? isLoading
-                ? "Looking for the best stack..."
-                : "Find Stack"
-              : "Next"}
-          </button>
+            {currentPage > 0 && (
+              <button
+                onClick={handlePrevious}
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+              >
+                Previous
+              </button>
+            )}
+            <button
+              onClick={handleNext}
+              disabled={isLoading}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+            >
+              {currentPage === projectQuestions.length - 1
+                ? isLoading
+                  ? "Looking for the best stack..."
+                  : "Find Stack"
+                : "Next"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
 export default ProjectInput;

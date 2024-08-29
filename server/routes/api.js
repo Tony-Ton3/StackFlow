@@ -19,7 +19,7 @@ router.get(
   getTutorialsForTechnology
 );
 router.get(
-  "/youtube/stacktutorials/:stackName",
+  "/youtube/stacktutorials/:stackName/:stackId",
   verifyToken,
   getTutorialsForStack
 );
