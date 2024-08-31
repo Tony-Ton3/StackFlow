@@ -53,6 +53,7 @@ export default function Saved() {
       <div>
         <TechStackExplorer
           currentStack={selectedStack}
+          isNewSubmission={false}
           handleBackToList={handleBackToList}
         />
       </div>

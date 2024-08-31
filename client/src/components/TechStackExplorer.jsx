@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   fetchTutorialsForTechnology,
   fetchTutorialsForStack,
@@ -17,15 +18,20 @@ const TechIcon = ({ name }) => {
   return <img src={icon.src} alt={icon.alt} className="w-6 h-6 mr-5" />;
 };
 
-const TechStackExplorer = ({ currentStack, handleBackToList }) => {
-  const [stackTutorials, setStackTutorials] = useState({});
+const TechStackExplorer = ({
+  currentStack,
+  isNewSubmission,
+  onBackToSaved,
+  handleBackToList,
+}) => {
   const [isStackTutorialsLoading, setIsStackTutorialsLoading] = useState(true);
-  const [techTutorials, setTechTutorials] = useState({});
-  const [expandedTech, setExpandedTech] = useState(null); //stores a name of a particular stack
+  const [stackTutorials, setStackTutorials] = useState({}); //stores tutorials on entire stack
+  const [techTutorials, setTechTutorials] = useState({}); //stores tutorials on a tech of the stack
+  const [expandedTech, setExpandedTech] = useState(null); //stores name of a particular stack
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   // const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   // const [showAlternative, setShowAlternative] = useState(false);
-
-  const dispatch = useDispatch();
   // const { currentStack } = useSelector((state) => state.stack);
 
   //gets last saved recommended stack from database when component mounts
@@ -94,21 +100,33 @@ const TechStackExplorer = ({ currentStack, handleBackToList }) => {
     }
   };
 
-  // const saveTechStack = async () => {
-  //   console.log("saving");
-  // };
-
   return (
     <div className="bg-gradient-to-b from-gray-900 to-black text-white">
       <div className="flex-grow flex items-center justify-center px-4 py-10">
         <div className="relative max-w-4xl p-10 rounded-3xl shadow bg-gradient-to-b from-gray-700 to-gray-900">
+          {isNewSubmission ? (
+            <button
+              onClick={onBackToSaved}
+              className="flex items-center py-2 px-4  bg-purple-500 hover:bg-purple-700 text-white font-bold rounded"
+            >
+              <IoIosArrowBack className="mr-2" /> Back to Saved Stacks
+            </button>
+          ) : (
+            <button
+              onClick={handleBackToList}
+              className="flex items-center py-2 px-4  bg-purple-500 hover:bg-purple-700 text-white font-bold rounded"
+            >
+              <IoIosArrowBack className="mr-2" /> Back to List
+            </button>
+          )}
+
           <button
-            onClick={handleBackToList}
-            className="flex items-center py-2 px-4  bg-purple-500 hover:bg-purple-700 text-white font-bold rounded"
+            onClick={() => navigate("/projectinput")}
+            className="mt-4 ml-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           >
-            <IoIosArrowBack className="mr-2" /> Back to List
+            New Recommendation
           </button>
-          {/* save stack button */}
+
           {/* <div
             className="absolute top-0 right-0 transform -translate-x-5 translate-y-5 transition-transform hover:scale-110"
             onClick={() => saveTechStack()}
@@ -117,6 +135,7 @@ const TechStackExplorer = ({ currentStack, handleBackToList }) => {
           >
             <MdSaveAlt className="w-10 h-10 text-gray-500 hover:text-white" />
           </div> */}
+
           {/* {isTooltipVisible && (
             <div className="absolute top-16 -right-1 bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
               Save this stack
@@ -128,6 +147,7 @@ const TechStackExplorer = ({ currentStack, handleBackToList }) => {
           <div className="bg-black w-full p-5 rounded-2xl text-center font-bold border-2 border-purple-400 border-dashed ">
             <p className=" mb-4">{currentStack?.recommendedStack.reasoning}</p>
           </div>
+
           {/* New section for stack tutorials */}
           <div className="mt-8">
             <h3 className="flex justify-center text-lg font-bold mb-4">

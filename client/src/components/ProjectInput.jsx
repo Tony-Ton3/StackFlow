@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setStackSuccess, setStackFailure } from "../redux/techstackSlice";
 import ProgressBar from "./ProgressBar";
 import { getClaudeRecommendation } from "../utils/api";
 import { projectQuestions } from "../constants/questions";
 import TechStackExplorer from "./TechStackExplorer";
+import { IoIosArrowDropdown, IoMdAdd, IoMdCheckmark } from "react-icons/io";
 
 function ProjectInput() {
   const [form, setForm] = useState(() => {
     const savedForm = localStorage.getItem("projectForm");
+
     return savedForm
       ? JSON.parse(savedForm)
       : {
@@ -23,7 +26,7 @@ function ProjectInput() {
   });
 
   const resetForm = () => {
-    //resets projectForm localStorage after submission
+    //clear local storage if user wants another recommendation
     const emptyForm = {
       description: "",
       projectType: "",
@@ -39,8 +42,10 @@ function ProjectInput() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showTechStack, setShowTechStack] = useState(false);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
   const { currentStack, loading } = useSelector((state) => state.stack);
 
@@ -55,6 +60,7 @@ function ProjectInput() {
       localStorage.setItem("projectForm", JSON.stringify(newForm));
       return newForm;
     });
+    console.log(form);
   };
 
   //handles check box changes
@@ -69,6 +75,7 @@ function ProjectInput() {
       localStorage.setItem("projectForm", JSON.stringify(newForm));
       return newForm;
     });
+    console.log(form);
   };
 
   //navigates to the next page of the form
@@ -107,55 +114,84 @@ function ProjectInput() {
   }
 
   if (showTechStack && currentStack) {
-    return <TechStackExplorer currentStack={currentStack} />;
+    return (
+      <TechStackExplorer
+        currentStack={currentStack}
+        isNewSubmission={true}
+        onBackToSaved={() => navigate("/createdstacks")}
+      />
+    );
   }
 
   const renderQuestion = (question) => {
     switch (question.type) {
       case "text":
         return (
-          <input
-            type="text"
+          <textarea
+            id={question.id}
             value={form[question.id] || ""}
             onChange={(e) => handleInputChange(question.id, e.target.value)}
-            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow-sm border rounded w-full h-32 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+            placeholder="I want to build a tech stack suggestions application catered to the project idea and needs"
           />
         );
       case "select":
         return (
-          <select
-            value={form[question.id] || ""}
-            onChange={(e) => handleInputChange(question.id, e.target.value)}
-            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="">Select an option</option>
-            {question.options.map((option) => (
-              <option key={option} value={option}>
-                {option}
+          <div className="relative">
+            <select
+              id={question.id}
+              value={form[question.id] || ""}
+              onChange={(e) => handleInputChange(question.id, e.target.value)}
+              onFocus={() => setIsSelectOpen(true)}
+              onBlur={() => setIsSelectOpen(false)}
+              className="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            >
+              <option value="" disabled>
+                Select an option
               </option>
-            ))}
-          </select>
+              {question.options.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <IoIosArrowDropdown
+                className={`size-5 transition-transform duration-300 ${
+                  isSelectOpen ? "" : "rotate-180"
+                }`}
+              />
+            </div>
+          </div>
         );
       case "multiselect":
         return (
-          <div className="mt-2">
-            {question.options.map((option) => (
-              <label key={option} className="inline-flex items-center mr-4">
-                <input
-                  type="checkbox"
-                  checked={form[question.id]?.includes(option)}
-                  onChange={(e) =>
-                    handleMultiSelectChange(
-                      question.id,
-                      option,
-                      e.target.checked
-                    )
+          <div className="flex flex-wrap gap-2">
+            {question.options.map((option, index) => {
+              const isSelected = form[question.id]?.includes(option) || false;
+              return (
+                <button
+                  key={index}
+                  onClick={() =>
+                    handleMultiSelectChange(question.id, option, !isSelected)
                   }
-                  className="form-checkbox h-5 w-5 text-blue-600"
-                />
-                <span className="ml-2 text-gray-700">{option}</span>
-              </label>
-            ))}
+                  className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
+                    isSelected
+                      ? "bg-pink-500 text-white"
+                      : "bg-blue-500 text-white"
+                  }`}
+                >
+                  {option}
+                  <span className="ml-2">
+                    {isSelected ? (
+                      <IoMdCheckmark className="h-4 w-4" />
+                    ) : (
+                      <IoMdAdd className="h-4 w-4" />
+                    )}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         );
       default:
@@ -166,17 +202,13 @@ function ProjectInput() {
   const currentPageQuestions = projectQuestions[currentPage];
 
   return (
-    <div className="bg-black min-h-screen flex flex-col justify-center items-center">
+    <div className="bg-gray-800 min-h-screen flex flex-col justify-center items-center">
       <div className="w-full max-w-4xl mx-auto p-6">
-        <div className="bg-white rounded-lg shadow-lg p-8">
+        <div className="bg-gray-100 rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
             {currentPageQuestions.title}
           </h2>
-          <ProgressBar
-            currentStep={currentPage}
-            totalSteps={projectQuestions.length}
-          />
-
+          <ProgressBar currentPage={currentPage} />
           <div className="mt-8 space-y-6">
             {currentPageQuestions.questions.map((question) => (
               <div key={question.id}>

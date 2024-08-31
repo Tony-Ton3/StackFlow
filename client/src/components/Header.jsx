@@ -15,11 +15,10 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    const path = location.pathname.slice(1);
-    if (path === "") setSelected("Home");
-    else if (path === "projectinput") setSelected("Find");
-    // else if (path === "techstackexplorer") setSelected("Stack");
-    else if (path === "created") setSelected("Created Stacks");
+    const path = location.pathname;
+    if (path === "/home") setSelected("Home");
+    else if (path === "/projectinput") setSelected("Find");
+    else if (path === "/createdstacks") setSelected("Created Stacks");
   }, [location]);
 
   const handleSignout = async () => {
@@ -47,7 +46,6 @@ export default function Header() {
           setSelected(text);
           if (text === "Home") navigate("/home");
           else if (text === "Find") navigate("/projectinput");
-          // else if (text === "Stack") navigate("/techstackexplorer");
           else if (text === "Created Stacks") navigate("/createdstacks");
         }}
         className={`${
@@ -69,11 +67,13 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black text-white p-4 border-b-2 border-b-white">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-200 text-white p-4 border-b-2 border-b-white">
       <div className="flex justify-between items-center">
         <div className="flex justify-center items-center space-x-2">
-          <TbStack3Filled className="size-10" />
-          <h1 className="text-2xl font-bold">Tech Stack Finder</h1>
+          <TbStack3Filled className="size-10 bg-black rounded-lg p-1" />
+          <h1 className="text-2xl font-bold text-gray-600">
+            Tech Stack Finder
+          </h1>
         </div>
 
         <div className="flex mr-36 items-center flex-wrap gap-2">
@@ -87,12 +87,14 @@ export default function Header() {
           ))}
         </div>
         {currentUser ? (
-          <button
-            className="flex justify-center items-center w-20 h-10 font-bold bg-purple-400 rounded-lg"
-            onClick={() => handleSignout()}
-          >
-            <p>Sign Out</p>
-          </button>
+          <div className="bg-gray-200 rounded-lg flex items-center justify-center">
+            <button
+              onClick={() => handleSignout()}
+              className="px-6 py-2 rounded-lg font-medium bg-gradient-to-r from-violet-600 to-indigo-600 text-white w-fit transition-all shadow-[3px_3px_0px_black] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px]"
+            >
+              <p>Sign Out</p>
+            </button>
+          </div>
         ) : (
           <button
             className="flex justify-center items-center w-20 h-10 font-bold bg-purple-400 rounded-lg"
