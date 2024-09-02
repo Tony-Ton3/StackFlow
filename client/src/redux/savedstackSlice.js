@@ -23,6 +23,11 @@ const savedstackSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    clearSavedStacks: (state) => {
+      state.currentSavedStack = null;
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
@@ -30,6 +35,7 @@ export const {
   setSavedStackStart,
   setSavedStackSuccess,
   setSavedStackFailure,
+  clearSavedStacks,
 } = savedstackSlice.actions;
 
 export default savedstackSlice.reducer;

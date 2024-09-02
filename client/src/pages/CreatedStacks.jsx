@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   setSavedStackSuccess,
   setSavedStackFailure,
+  clearSavedStacks,
 } from "../redux/savedstackSlice";
 import TechStackExplorer from "../components/TechStackExplorer";
 
@@ -30,10 +31,12 @@ export default function Saved() {
           throw new Error(errorData.message || "Failed to get stacks");
         }
         const data = await response.json();
+        //sets saved stack for the user to global state
         dispatch(setSavedStackSuccess(data));
       } catch (error) {
         dispatch(setSavedStackFailure(error.message));
-        console.error("Error fetching stacks for user:", error);
+        //if try fails, display no saved stacks
+        dispatch(clearSavedStacks());
       }
     };
 

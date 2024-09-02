@@ -131,8 +131,8 @@ function ProjectInput() {
             id={question.id}
             value={form[question.id] || ""}
             onChange={(e) => handleInputChange(question.id, e.target.value)}
-            className="shadow-sm border rounded w-full h-32 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-            placeholder="I want to build a tech stack suggestions application catered to the project idea and needs"
+            className="border rounded w-full h-24 py-2 px-3 bg-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent "
+            placeholder="Describe your project idea here..."
           />
         );
       case "select":
@@ -144,7 +144,7 @@ function ProjectInput() {
               onChange={(e) => handleInputChange(question.id, e.target.value)}
               onFocus={() => setIsSelectOpen(true)}
               onBlur={() => setIsSelectOpen(false)}
-              className="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="block appearance-none w-full bg-gray-100 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
             >
               <option value="" disabled>
                 Select an option
@@ -155,9 +155,9 @@ function ProjectInput() {
                 </option>
               ))}
             </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
               <IoIosArrowDropdown
-                className={`size-5 transition-transform duration-300 ${
+                className={`size-4 transition-transform duration-300 ${
                   isSelectOpen ? "" : "rotate-180"
                 }`}
               />
@@ -166,7 +166,7 @@ function ProjectInput() {
         );
       case "multiselect":
         return (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1 justify-start">
             {question.options.map((option, index) => {
               const isSelected = form[question.id]?.includes(option) || false;
               return (
@@ -175,18 +175,18 @@ function ProjectInput() {
                   onClick={() =>
                     handleMultiSelectChange(question.id, option, !isSelected)
                   }
-                  className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
+                  className={`inline-flex items-center px-3 py-1 rounded-full text-md font-medium transition-colors duration-200 ${
                     isSelected
-                      ? "bg-pink-500 text-white"
-                      : "bg-blue-500 text-white"
+                      ? "bg-accent text-background"
+                      : "bg-secondary text-background"
                   }`}
                 >
                   {option}
-                  <span className="ml-2">
+                  <span className="ml-1">
                     {isSelected ? (
-                      <IoMdCheckmark className="h-4 w-4" />
+                      <IoMdCheckmark className="h-5 w-5" />
                     ) : (
-                      <IoMdAdd className="h-4 w-4" />
+                      <IoMdAdd className="h-5 w-5" />
                     )}
                   </span>
                 </button>
@@ -202,17 +202,17 @@ function ProjectInput() {
   const currentPageQuestions = projectQuestions[currentPage];
 
   return (
-    <div className="bg-gray-800 min-h-screen flex flex-col justify-center items-center">
-      <div className="w-full max-w-4xl mx-auto p-6">
-        <div className="bg-gray-100 rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+    <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen flex flex-col justify-center items-center pt-20">
+      <div className="w-full max-w-3xl mx-auto px-4">
+        <div className="bg-background rounded-lg shadow-lg p-6">
+          <h2 className="font-nerko text-3xl font-bold text-gray-600 mb-4 text-center">
             {currentPageQuestions.title}
           </h2>
           <ProgressBar currentPage={currentPage} />
-          <div className="mt-8 space-y-6">
+          <div className="mt-4 space-y-4">
             {currentPageQuestions.questions.map((question) => (
               <div key={question.id}>
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+                <label className="block text-sm font-medium mb-1">
                   {question.question}
                 </label>
                 {renderQuestion(question)}
@@ -223,12 +223,12 @@ function ProjectInput() {
           <div
             className={`flex ${
               !currentPage ? "justify-end" : "justify-between"
-            } mt-8`}
+            } mt-6 gap-2`}
           >
             {currentPage > 0 && (
               <button
                 onClick={handlePrevious}
-                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+                className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-secondary to-accent text-background transition-all shadow-[2px_2px_0px_black] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] focus:outline-none"
               >
                 Previous
               </button>
@@ -236,12 +236,12 @@ function ProjectInput() {
             <button
               onClick={handleNext}
               disabled={isLoading}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-secondary to-accent text-background transition-all shadow-[2px_2px_0px_black] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {currentPage === projectQuestions.length - 1
                 ? isLoading
-                  ? "Looking for the best stack..."
-                  : "Find Stack"
+                  ? "Cooking up your stack..."
+                  : "Create Stack"
                 : "Next"}
             </button>
           </div>

@@ -9,7 +9,7 @@ export default function Home() {
   // const { currentUser } = useSelector((state) => state.user);
 
   return (
-    <div className="h-screen bg-gradient-to-b from-gray-900 to-black text-white">
+    <div className="font-nerko h-screen bg-gradient-to-b from-gray-900 to-black text-white">
       <main className="container mx-auto px-4 pt-28">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -17,9 +17,7 @@ export default function Home() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h1 className="text-5xl font-bold mb-6">
-            Discover Your Ideal Tech Stack
-          </h1>
+          <h1 className="text-7xl font-bold mb-6">StackFlow</h1>
           <p className="text-xl mb-12">
             Tailored recommendations for your project, powered by AI
           </p>
@@ -33,7 +31,7 @@ export default function Home() {
         >
           <button
             onClick={() => navigate("/projectinput")}
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full text-xl transition duration-300 transform hover:scale-105"
+            className="bg-secondary hover:bg-accent text-white font-bold py-3 px-8 rounded-full text-2xl transition duration-300 transform hover:scale-105"
           >
             Get Started
           </button>

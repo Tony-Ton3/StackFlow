@@ -399,7 +399,7 @@ export const TechIcons = {
   DigitalOcean: { src: digitaloceanSvg, alt: "DigitalOcean Icon" },
   Hhvm: { src: hhvmSvg, alt: "HHVM Icon" },
   MongoDB: { src: mongodbSvg, alt: "MongoDB Icon" },
-  ReactJs: { src: reactjsSvg, alt: "React.js Icon" },
+  React: { src: reactjsSvg, alt: "React.js Icon" },
   Vim: { src: vimSvg, alt: "Vim Icon" },
   Auth0: { src: auth0Svg, alt: "Auth0 Icon" },
   Django: { src: djangoSvg, alt: "Django Icon" },

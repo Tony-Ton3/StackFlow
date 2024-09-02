@@ -48,7 +48,6 @@ export const getallsavedstacks = async (req, res, next) => {
       return res.status(404).json({ message: "No saved stacks found" });
     }
 
-    console.log("Saved stacks returned: ", savedStacks);
     res.status(200).json(savedStacks);
   } catch (error) {
     console.error("Error fetching stacks:", error);

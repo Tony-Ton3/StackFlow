@@ -1,11 +1,22 @@
-import { Outlet } from "react-router-dom";
-import Header from "./Header"; // Assuming you have a Header component
+import { Outlet, useLocation } from "react-router-dom";
+import Header from "./Header";
 
 export default function Layout() {
+  const location = useLocation();
+
+  // Determine if the current route should be scrollable
+  const isScrollable =
+    location.pathname.includes("/techstackexplorer") ||
+    location.pathname.includes("/createdstacks");
+
   return (
-    <div>
+    <div className="h-screen flex flex-col overflow-hidden">
       <Header />
-      <main className="pt-16">
+      <main
+        className={`flex-1 ${
+          isScrollable ? "overflow-auto" : "overflow-hidden"
+        }`}
+      >
         <Outlet />
       </main>
     </div>

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { TbStack3Filled } from "react-icons/tb";
 import { signoutSuccess } from "../redux/userSlice";
+import { clearSavedStacks } from "../redux/savedstackSlice";
 import { motion } from "framer-motion";
 
 export default function Header() {
@@ -31,7 +32,9 @@ export default function Header() {
       if (!res.ok) {
         console.log(data.message);
       } else {
+        //clear current user and thier saved stacks
         dispatch(signoutSuccess());
+        dispatch(clearSavedStacks());
         navigate("/sign-in");
       }
     } catch (error) {
@@ -50,16 +53,16 @@ export default function Header() {
         }}
         className={`${
           selected
-            ? "text-white"
-            : "text-slate-300 hover:text-slate-200 hover:bg-slate-700"
-        } text-sm font-bold transition-colors px-2.5 py-0.5 rounded-md relative`}
+            ? "text-background"
+            : " hover:text-background hover:bg-accent"
+        } text-lg font-bold transition-colors px-2.5 py-0.5 rounded-md relative`}
       >
         <span className="relative z-10">{text}</span>
         {selected && (
           <motion.span
             layoutId="pill-tab"
             transition={{ type: "spring", duration: 0.5 }}
-            className="absolute inset-0 z-0 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-md"
+            className="absolute inset-0 z-0 bg-gradient-to-r from-secondary to-accent rounded-md"
           ></motion.span>
         )}
       </button>
@@ -67,13 +70,11 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-200 text-white p-4 border-b-2 border-b-white">
+    <header className="font-nerko fixed top-0 left-0 right-0 z-50 bg-gray-900 text-white p-4">
       <div className="flex justify-between items-center">
         <div className="flex justify-center items-center space-x-2">
-          <TbStack3Filled className="size-10 bg-black rounded-lg p-1" />
-          <h1 className="text-2xl font-bold text-gray-600">
-            Tech Stack Finder
-          </h1>
+          <TbStack3Filled className="size-10 bg-accent text-background rounded-lg p-1 border-2 border-dashed border-" />
+          <h1 className="text-3xl font-bold">StackFlow</h1>
         </div>
 
         <div className="flex mr-36 items-center flex-wrap gap-2">
@@ -87,17 +88,17 @@ export default function Header() {
           ))}
         </div>
         {currentUser ? (
-          <div className="bg-gray-200 rounded-lg flex items-center justify-center">
+          <div className="rounded-lg flex items-center justify-center">
             <button
               onClick={() => handleSignout()}
-              className="px-6 py-2 rounded-lg font-medium bg-gradient-to-r from-violet-600 to-indigo-600 text-white w-fit transition-all shadow-[3px_3px_0px_black] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px]"
+              className="px-6 py-2 rounded-lg font-medium bg-gradient-to-r from-secondary to-accent text-background w-fit transition-all shadow-[3px_3px_0px_black] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <p>Sign Out</p>
             </button>
           </div>
         ) : (
           <button
-            className="flex justify-center items-center w-20 h-10 font-bold bg-purple-400 rounded-lg"
+            className="px-6 py-2 rounded-lg font-medium bg-gradient-to-r from-secondary to-accent text-background w-fit transition-all shadow-[3px_3px_0px_black] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={() => navigate("/sign-in")}
           >
             <p>Sign In</p>

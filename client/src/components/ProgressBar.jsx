@@ -5,11 +5,11 @@ const ProgressBar = ({ currentPage }) => {
   const progress = (currentPage / (totalPages - 1)) * 100;
 
   return (
-    <div className="relative p-10">
+    <div className="relative px-10">
       {/* Progress bar */}
-      <div className="absolute top-14 left-1/2 transform -translate-x-1/2 w-[calc(100%-10rem)] h-1 bg-gray-200">
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[calc(100%-10rem)] h-1 bg-white">
         <div
-          className="h-full bg-purple-500 transition-all duration-300 ease-in-out"
+          className="h-full bg-secondary transition-all duration-300 ease-in-out"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -21,15 +21,15 @@ const ProgressBar = ({ currentPage }) => {
             <div
               className={`w-10 h-10 flex items-center justify-center rounded-full border-2 ${
                 index < currentPage
-                  ? "bg-purple-500 border-purple-500 text-white"
+                  ? "bg-secondary border-secondary text-white"
                   : index === currentPage
-                  ? "bg-white border-purple-500 text-purple-500"
+                  ? "bg-white border-secondary text-secondary"
                   : "bg-white border-gray-300 text-gray-300"
               }`}
             >
               {index + 1}
             </div>
-            <div className="mt-2 text-sm font-medium text-gray-500">
+            <div className="mt-2 text-sm font-medium">
               {`Step ${index + 1}`}
             </div>
           </div>
