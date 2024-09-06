@@ -98,21 +98,15 @@ const TechStackExplorer = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-8">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-8 py-28">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-start items-center mb-8">
           <button
             onClick={isNewSubmission ? onBackToSaved : handleBackToList}
-            className="flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition duration-300"
+            className="flex items-center px-6 py-2 rounded-lg font-bold bg-gradient-to-r from-primary to-cyan-300 text-black w-fit transition-all shadow-[3px_3px_0px_white] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <IoIosArrowBack className="mr-2" />
-            {isNewSubmission ? "Back to Saved Stacks" : "Back to List"}
-          </button>
-          <button
-            onClick={() => navigate("/projectinput")}
-            className="flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition duration-300"
-          >
-            <IoMdCreate className="mr-2" /> Create Another
+            {isNewSubmission ? "Show all created" : "Back"}
           </button>
         </div>
 

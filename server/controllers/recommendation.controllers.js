@@ -21,6 +21,7 @@ export const getClaudeRecommendation = async (req, res, next) => {
   }
   try {
     const prompt = generatePrompt(req.body);
+    console.log(prompt);
 
     const response = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20240620",

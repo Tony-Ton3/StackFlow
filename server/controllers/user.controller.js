@@ -1,4 +1,5 @@
 import Stack from "../models/stack.model.js";
+import UserTutorials from "../models/tutorial.model.js";
 import { errorHandler } from "../utils/error.js";
 
 export const signout = (req, res, next) => {
@@ -35,7 +36,6 @@ export const getstack = async (req, res, next) => {
 
 export const getallsavedstacks = async (req, res, next) => {
   try {
-    // Ensure user is authenticated
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -52,5 +52,34 @@ export const getallsavedstacks = async (req, res, next) => {
   } catch (error) {
     console.error("Error fetching stacks:", error);
     next(errorHandler(500, "Error fetching stacks"));
+  }
+};
+
+export const deletesavedstack = async (req, res, next) => {
+  try {
+    const { stackId } = req.params;
+    const userId = req.user.id;
+
+    // Check if the stack exists and belongs to the user
+    const stack = await Stack.findOne({ _id: stackId, userId });
+
+    if (!stack) {
+      return res
+        .status(404)
+        .json({ message: "Stack not found or unauthorized" });
+    }
+
+    // Delete the stack
+    await Stack.findByIdAndDelete(stackId);
+
+    // Delete associated tutorials
+    await UserTutorials.deleteOne({ stackId: stackId });
+
+    res
+      .status(200)
+      .json({ message: "Stack and associated tutorials deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting stack:", error);
+    next(errorHandler(500, "Error deleting stack"));
   }
 };

@@ -40,6 +40,7 @@ Based on your analysis, provide the following:
    - Backend language and framework (if necessary)
    - Database (if necessary)
    - Any additional technologies or tools necessary for the project
+   - If the user lists a specific technology in the </project_description> add the technology to the list of technologies
 2. An alternative, possibly simpler tech stack
 3. Brief getting started guidance
 4. Additional advice or considerations 

@@ -73,7 +73,7 @@ export default function Header() {
     <header className="font-nerko fixed top-0 left-0 right-0 z-50 bg-gray-900 text-white p-4">
       <div className="flex justify-between items-center">
         <div className="flex justify-center items-center space-x-2">
-          <TbStack3Filled className="size-10 bg-accent text-background rounded-lg p-1 border-2 border-dashed border-" />
+          <TbStack3Filled className="size-10 bg-secondary text-background rounded-lg p-1 border-2 border-dashed" />
           <h1 className="text-3xl font-bold">StackFlow</h1>
         </div>
 
@@ -91,7 +91,7 @@ export default function Header() {
           <div className="rounded-lg flex items-center justify-center">
             <button
               onClick={() => handleSignout()}
-              className="px-6 py-2 rounded-lg font-medium bg-gradient-to-r from-secondary to-accent text-background w-fit transition-all shadow-[3px_3px_0px_black] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 rounded-lg font-medium bg-gradient-to-r from-secondary to-accent text-background w-fit transition-all shadow-[3px_3px_0px_white] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <p>Sign Out</p>
             </button>

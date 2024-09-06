@@ -9,7 +9,7 @@ const TechPopUp = ({ tech, techTutorials, setExpandedTech }) => {
     setExpandedTech(null);
   };
 
-  //allows to exist modal with esc key
+  //allows to exist modal with esc key and outside click
   useEffect(() => {
     const handleOutsideClick = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {

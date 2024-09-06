@@ -60,7 +60,6 @@ function ProjectInput() {
       localStorage.setItem("projectForm", JSON.stringify(newForm));
       return newForm;
     });
-    console.log(form);
   };
 
   //handles check box changes
@@ -75,7 +74,6 @@ function ProjectInput() {
       localStorage.setItem("projectForm", JSON.stringify(newForm));
       return newForm;
     });
-    console.log(form);
   };
 
   //navigates to the next page of the form

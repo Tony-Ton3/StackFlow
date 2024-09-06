@@ -56,16 +56,16 @@ export default function SignIn() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-indigo-900">
-      <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-          Sign In
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-black">
+      <div className="bg-background p-8 rounded-2xl shadow-md w-full max-w-md">
+        <h2 className="font-nerko text-2xl font-bold mb-6 text-center text-gray-800">
+          Welcome back to StackFlow
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <label
               htmlFor="email"
-              className="text-sm font-medium text-gray-700"
+              className="font-nerko text-sm font-medium text-gray-700"
             >
               Email
             </label>
@@ -74,14 +74,14 @@ export default function SignIn() {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary transition duration-200"
               placeholder="your@email.com"
             />
           </div>
           <div className="space-y-2">
             <label
               htmlFor="password"
-              className="text-sm font-medium text-gray-700"
+              className="font-nerko text-sm font-medium text-gray-700"
             >
               Password
             </label>
@@ -91,7 +91,7 @@ export default function SignIn() {
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary transition duration-200"
                 placeholder="••••••••"
               />
               <button
@@ -113,7 +113,7 @@ export default function SignIn() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition duration-200 ${
+            className={`w-full font-nerko py-2 px-4 bg-secondary hover:bg-accent text-white font-semibold rounded-md transition duration-200 ${
               loading ? "opacity-70 cursor-not-allowed" : ""
             }`}
           >

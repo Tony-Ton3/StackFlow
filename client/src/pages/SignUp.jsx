@@ -102,17 +102,17 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-indigo-900">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-black">
       <div className="flex justify-center w-full max-w-xl">
-        <div className="bg-white p-8 rounded-2xl shadow-md w-3/4">
-          <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-            Sign Up
+        <div className="bg-background p-8 rounded-2xl shadow-md w-3/4">
+          <h2 className="font-nerko text-2xl font-bold mb-6 text-center text-gray-800">
+            Sign up to StackFlow :)
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <label
                 htmlFor="name"
-                className="text-sm font-medium text-gray-700"
+                className="font-nerko text-sm font-medium text-gray-700"
               >
                 Name
               </label>
@@ -121,14 +121,14 @@ export default function SignUp() {
                 type="text"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary transition duration-200"
                 placeholder="Your name"
               />
             </div>
             <div className="space-y-2">
               <label
                 htmlFor="email"
-                className="text-sm font-medium text-gray-700"
+                className="font-nerko text-sm font-medium text-gray-700"
               >
                 Email
               </label>
@@ -137,14 +137,14 @@ export default function SignUp() {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary transition duration-200"
                 placeholder="your@email.com"
               />
             </div>
             <div className="space-y-2">
               <label
                 htmlFor="password"
-                className="text-sm font-medium text-gray-700"
+                className="font-nerko text-sm font-medium text-gray-700"
               >
                 Password
               </label>
@@ -154,7 +154,7 @@ export default function SignUp() {
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary transition duration-200"
                   placeholder="••••••••"
                 />
                 <button
@@ -171,10 +171,10 @@ export default function SignUp() {
               </div>
               <div className="mt-2">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-sm text-gray-500">
+                  <span className="font-nerko text-sm text-gray-500">
                     Password strength:
                   </span>
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="font-nerko text-sm font-medium text-gray-700">
                     {getPasswordStrengthText()}
                   </span>
                 </div>
@@ -201,7 +201,7 @@ export default function SignUp() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition duration-200 ${
+              className={`font-nerko w-full py-2 px-4 bg-secondary hover:bg-accent text-white font-semibold rounded-md transition duration-200 ${
                 loading ? "opacity-70 cursor-not-allowed" : ""
               }`}
             >
@@ -216,6 +216,7 @@ export default function SignUp() {
           </p>
         </div>
       </div>
+
       <div className="bg-blue-50 p-8 rounded-3xl shadow-md w-1/8 flex items-center">
         <div className="text-sm text-gray-700">
           <h3 className="font-semibold mb-2">Password Guidelines</h3>
@@ -228,6 +229,7 @@ export default function SignUp() {
           </ul>
         </div>
       </div>
+
     </div>
   );
 }
