@@ -2,8 +2,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 
 export default function Layout() {
-  const location = useLocation();
-
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <Header />

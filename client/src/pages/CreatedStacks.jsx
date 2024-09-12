@@ -31,7 +31,6 @@ export default function Saved() {
             headers: {
               "Content-Type": "application/json",
             },
-            
           }
         );
         if (!response.ok) {
@@ -129,14 +128,14 @@ export default function Saved() {
           <IoMdCreate className="mr-2" /> Create Another
         </button>
       </div>
-      <div className="font-nerko grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 ">
         {currentSavedStack?.map((stack, index) => (
           <div
             key={stack.id || index}
             className="flex flex-col h-full bg-secondary shadow-md rounded-lg overflow-hidden border-4 border-dashed cursor-pointer hover:shadow-lg hover:shadow-accent transition-all duration-500 ease-in-out transform hover:scale-105"
           >
             <div className="flex-grow p-6">
-              <h3 className="text-xl font-semibold mb-2">
+              <h3 className="font-bold text-xl mb-2">
                 {stack.recommendedStack.name}
               </h3>
               <p className="text-gray-600">

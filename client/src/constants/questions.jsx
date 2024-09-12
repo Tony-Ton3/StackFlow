@@ -63,16 +63,6 @@ export const projectQuestions = [
     title: "Your Background",
     questions: [
       {
-        id: "experience",
-        question: "What's your programming experience level?",
-        type: "select",
-        options: [
-          "Beginner (Can write basic code, learning fundamentals.)",
-          "Intermediate (Builds full applications, understands best practices.)",
-          "Advanced (Architects complex systems, deep expertise in multiple areas.)",
-        ],
-      },
-      {
         id: "knownTechnologies",
         question: "Which technologies are you already familiar with?",
         type: "multiselect",
@@ -98,6 +88,16 @@ export const projectQuestions = [
           "Docker",
           "AWS",
           "Other",
+        ],
+      },
+      {
+        id: "experience",
+        question: "What's your programming experience level?",
+        type: "select",
+        options: [
+          "Beginner (Can write basic code, learning fundamentals.)",
+          "Intermediate (Builds full applications, understands best practices.)",
+          "Advanced (Architects complex systems, deep expertise in multiple areas.)",
         ],
       },
     ],

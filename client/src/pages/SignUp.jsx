@@ -178,7 +178,7 @@ export default function SignUp() {
                     {getPasswordStrengthText()}
                   </span>
                 </div>
-                <div className="h-2 bg-gray-200 rounded-full">
+                <div className="h-2 bg-gray-500 rounded-full">
                   <div
                     className={`h-full rounded-full transition-all duration-300 ${
                       passwordStrength === 0
@@ -229,7 +229,6 @@ export default function SignUp() {
           </ul>
         </div>
       </div>
-
     </div>
   );
 }

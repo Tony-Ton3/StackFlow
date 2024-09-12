@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   fetchTutorialsForTechnology,
@@ -13,6 +13,7 @@ import {
 } from "react-icons/io";
 import { TbStack3Filled } from "react-icons/tb";
 import TechPopUp from "./TechPopUp";
+import { FaChevronDown } from "react-icons/fa";
 
 // normalize tech name returned from the api to match an icon image
 const normalizeTechName = (name) => {
@@ -30,7 +31,7 @@ const TechIcon = ({ name }) => {
   // If a matching icon is found, return an img element with the icon's properties
   // If no match is found, return null (no icon will be displayed)
   return icon ? (
-    <img src={icon[1].src} alt={icon[1].alt} className="w-6 h-6 mr-2" />
+    <img src={icon[1].src} alt={icon[1].alt} className="w-8 h-8 " />
   ) : (
     <TbStack3Filled className="w-6 h-6 mr-2" />
   );
@@ -98,7 +99,7 @@ const TechStackExplorer = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-8 py-28">
+    <div className="scrollbar-thin min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-8 py-28">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-start items-center mb-8">
           <button
@@ -227,12 +228,20 @@ const TutorialCard = ({ video }) => (
 const TechButton = ({ tech, expanded, onExpand }) => (
   <button
     onClick={onExpand}
-    className={`relative w-full h-16 text-white ${
-      expanded ? "bg-purple-600" : "bg-gray-700"
-    } rounded-xl shadow transition duration-300 flex items-center justify-center hover:bg-purple-500`}
+    className={`w-full h-16 flex items-center justify-between px-6 py-2 rounded-lg font-medium bg-gradient-to-r from-secondary to-accent text-background transition-all hover:shadow-none ${
+      expanded ? "shadow-none translate-x-[3px]" : "shadow-[3px_3px_0px_black]"
+    } hover:translate-x-[3px] hover:translate-y-[3px] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
   >
-    <TechIcon name={tech.name} />
-    <span className="font-semibold">{tech.name}</span>
+    <div className="flex items-center">
+      <TechIcon name={tech.name} />
+      <span className="font-semibold ml-3">{tech.name}</span>
+    </div>
+    <FaChevronDown
+      className={`transition-transform duration-300 ${
+        expanded ? "rotate-180" : ""
+      }`}
+      size={24}
+    />
   </button>
 );
 

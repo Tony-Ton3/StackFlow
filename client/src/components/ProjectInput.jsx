@@ -7,6 +7,7 @@ import { getClaudeRecommendation } from "../utils/api";
 import { projectQuestions } from "../constants/questions";
 import TechStackExplorer from "./TechStackExplorer";
 import { IoIosArrowDropdown, IoMdAdd, IoMdCheckmark } from "react-icons/io";
+import BarLoader from "./BarLoader";
 
 function ProjectInput() {
   const [form, setForm] = useState(() => {
@@ -47,7 +48,7 @@ function ProjectInput() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
-  const { currentStack, loading } = useSelector((state) => state.stack);
+  const { currentStack } = useSelector((state) => state.stack);
 
   useEffect(() => {
     localStorage.setItem("projectForm", JSON.stringify(form));
@@ -111,6 +112,19 @@ function ProjectInput() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+        <div className="flex flex-col justify-center items-center bg-gray-600 rounded-lg p-8 text-center">
+          <BarLoader />
+          <h2 className="text-2xl font-bold text-background mb-2">
+            Creating your stack...
+          </h2>
+        </div>
+      </div>
+    );
+  }
+
   if (showTechStack && currentStack) {
     return (
       <TechStackExplorer
@@ -129,7 +143,7 @@ function ProjectInput() {
             id={question.id}
             value={form[question.id] || ""}
             onChange={(e) => handleInputChange(question.id, e.target.value)}
-            className="border rounded w-full h-24 py-2 px-3 bg-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent "
+            className="border-2 border-gray-500 rounded w-full h-24 py-2 px-3 bg-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent "
             placeholder="Describe your project idea here..."
           />
         );
@@ -142,7 +156,7 @@ function ProjectInput() {
               onChange={(e) => handleInputChange(question.id, e.target.value)}
               onFocus={() => setIsSelectOpen(true)}
               onBlur={() => setIsSelectOpen(false)}
-              className="block appearance-none w-full bg-gray-100 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+              className="block appearance-none w-full bg-gray-100 py-2 px-3 pr-8 rounded border-2 border-gray-500 leading-tight focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
             >
               <option value="" disabled>
                 Select an option
@@ -176,7 +190,7 @@ function ProjectInput() {
                   className={`inline-flex items-center px-3 py-1 rounded-full text-md font-medium transition-colors duration-200 ${
                     isSelected
                       ? "bg-accent text-background"
-                      : "bg-secondary text-background"
+                      : "text-accent border-2 border-accent"
                   }`}
                 >
                   {option}
@@ -233,13 +247,10 @@ function ProjectInput() {
             )}
             <button
               onClick={handleNext}
-              disabled={isLoading}
-              className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-secondary to-accent text-background transition-all shadow-[2px_2px_0px_black] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-secondary to-accent text-background transition-all shadow-[2px_2px_0px_black] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] focus:outline-none"
             >
               {currentPage === projectQuestions.length - 1
-                ? isLoading
-                  ? "Cooking up your stack..."
-                  : "Create Stack"
+                ? "Create Stack"
                 : "Next"}
             </button>
           </div>

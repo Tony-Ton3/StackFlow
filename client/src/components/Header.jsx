@@ -70,14 +70,14 @@ export default function Header() {
   };
 
   return (
-    <header className="font-nerko fixed top-0 left-0 right-0 z-50 bg-gray-900 text-white p-4">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900 text-white p-4">
       <div className="flex justify-between items-center">
         <div className="flex justify-center items-center space-x-2">
           <TbStack3Filled className="size-10 bg-secondary text-background rounded-lg p-1 border-2 border-dashed" />
-          <h1 className="text-3xl font-bold">StackFlow</h1>
+          <h1 className="font-nerko text-3xl font-bold">StackFlow</h1>
         </div>
 
-        <div className="flex mr-36 items-center flex-wrap gap-2">
+        <div className="font-bold flex  items-center flex-wrap gap-2">
           {tabs.map((tab) => (
             <Chip
               text={tab}

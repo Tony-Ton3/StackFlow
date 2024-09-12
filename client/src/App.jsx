@@ -21,7 +21,6 @@ export default function App() {
       {currentUser && (
         // private route redirects user to sign in if not logged in
         <Route element={<PrivateRoute />}>
-          {/* renderes header in layout */}
           <Route element={<Layout />}>
             <Route path="projectinput" element={<ProjectInput />} />
             <Route path="techstackexplorer" element={<TechStackExplorer />} />
@@ -29,7 +28,7 @@ export default function App() {
           </Route>
         </Route>
       )}
-      <Route path="*" element={<SignIn />} />
+      <Route path="*" element={<Home />} />
     </Routes>
   );
 }
