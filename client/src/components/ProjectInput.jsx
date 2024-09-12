@@ -68,9 +68,7 @@ function ProjectInput() {
     setForm((prev) => {
       const newForm = {
         ...prev,
-        [id]: isChecked
-          ? [...(prev[id] || []), value]
-          : prev[id].filter((item) => item !== value),
+        [id]: isChecked ? [...prev[id], value] : prev[id].filter((item) => item !== value),
       };
       localStorage.setItem("projectForm", JSON.stringify(newForm));
       return newForm;
@@ -180,22 +178,22 @@ function ProjectInput() {
         return (
           <div className="flex flex-wrap gap-1 justify-start">
             {question.options.map((option, index) => {
-              const isSelected = form[question.id]?.includes(option) || false;
+              const isChecked = form[question.id]?.includes(option) || false;
               return (
                 <button
                   key={index}
                   onClick={() =>
-                    handleMultiSelectChange(question.id, option, !isSelected)
+                    handleMultiSelectChange(question.id, option, !isChecked)
                   }
                   className={`inline-flex items-center px-3 py-1 rounded-full text-md font-medium transition-colors duration-200 ${
-                    isSelected
+                    isChecked
                       ? "bg-accent text-background"
                       : "text-accent border-2 border-accent"
                   }`}
                 >
                   {option}
                   <span className="ml-1">
-                    {isSelected ? (
+                    {isChecked ? (
                       <IoMdCheckmark className="h-5 w-5" />
                     ) : (
                       <IoMdAdd className="h-5 w-5" />

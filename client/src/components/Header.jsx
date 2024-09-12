@@ -77,7 +77,7 @@ export default function Header() {
           <h1 className="font-nerko text-3xl font-bold">StackFlow</h1>
         </div>
 
-        <div className="font-bold flex  items-center flex-wrap gap-2">
+        <div className="font-bold flex  items-center gap-2">
           {tabs.map((tab) => (
             <Chip
               text={tab}
