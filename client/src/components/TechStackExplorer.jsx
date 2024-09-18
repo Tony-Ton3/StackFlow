@@ -99,7 +99,7 @@ const TechStackExplorer = ({
   };
 
   return (
-    <div className="scrollbar-thin min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-8 py-28">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-8 py-28">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-start items-center mb-8">
           <button
